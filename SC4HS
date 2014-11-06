@@ -1,0 +1,271 @@
+definition(
+    name: "Virtual Switch Control HUE Lights and/or Switches",
+	namespace: "Pastorlicious",
+    author: "Anthony Pastor",
+    description: "Based in VERY large part on Virtual Switch Control Lights by cbd@deyoungproperties.com.  With the press of a single 'virtual switch', this app sets 1 OR 2 groups of your HUE light switches to specific colors / levels, and/or turn sets of switches on or off.",
+    category: "My Apps",
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Partner/hue.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Partner/hue@2x.png"
+)
+
+preferences {
+	section("Select Switch to monitor"){
+		input "theSwitch", "capability.switch"
+	}
+	section("Which HUE light(s) to put into Group 1:") {
+		input "group1", "capability.colorControl", multiple: true, required: false
+	}
+	section("Group 1's detailed light settings") {
+        input ("group1Lvl", "integer",title: "Level", required: false, multiple: false)  
+        input ("group1Color", "enum", multiple: false, title: "Color (Default is Soft White)", required: false, metadata:[values:["Soft White","White","Daylight","Warm White","Red","Green","Blue","Yellow","Orange","Purple","Pink"]])
+    }
+	section("Which HUE light(s) to put into Group 2:") {
+		input "group2", "capability.colorControl", multiple: true, required: false
+	}
+	section("Group 2's detailed light settings") {
+        input ("group2Lvl", "integer",title: "Level", required: false, multiple: false)  
+        input ("group2Color", "enum", multiple: false, title: "Color (Default is Soft White)", required: false, metadata:[values:["Soft White","White","Daylight","Warm White","Red","Green","Blue","Yellow","Orange","Purple","Pink"]])
+
+    }
+    section("Turn ON these lights..."){
+		input "switch1", "capability.switch", multiple: true, required: false
+	}
+    section("Turn OFF these lights..."){
+		input "switch2", "capability.switch", multiple: true, required: false
+	}
+  	section("And then off when there's been no movement for..."){
+		input "delayMinutes", "number", title: "Minutes?"
+        input "motion", "capability.motionSensor", title: "on this sensor...", required: true, multiple: true
+
+	}
+}
+
+def installed()
+{
+	subscribe(app, appTouch)
+        initialize()
+}
+
+def updated() {
+
+	unsubscribe()
+	subscribe(app, appTouch)
+    initialize()
+
+}
+
+
+def appTouch(evt) {
+	log.info evt.value
+    if (group1){
+     	def myLightLevel = state.lightLevel1 as Integer	
+	    def myhueColor = state.hueColor1 as Integer
+    	def mySat = state.saturation1 as Integer
+		def newValue = [hue: myhueColor, saturation: mySat, level: myLightLevel]
+
+   		group1.each {    
+		    it.setColor(newValue)       
+		}
+	}
+    
+    if (group2){
+     	def myLightLevel = state.lightLevel2 as Integer	
+	    def myhueColor = state.hueColor2 as Integer
+    	def mySat = state.saturation2 as Integer
+		def newValue = [hue: myhueColor, saturation: mySat, level: myLightLevel]
+        
+        group2.each {    
+		    it.setColor(newValue)       
+		}
+
+    }
+
+	if(switch1){
+    	switch1.on()
+    }
+    if(switch2){
+    	switch2.off()
+    }
+    theSwitch.off()
+
+}
+
+def onHandler(evt) {
+	log.info evt.value
+    if (group1){
+     	def myLightLevel = state.lightLevel1 as Integer	
+	    def myhueColor = state.hueColor1 as Integer
+    	def mySat = state.saturation1 as Integer
+		def newValue = [hue: myhueColor, saturation: mySat, level: myLightLevel]
+
+   		group1.each {    
+		    it.setColor(newValue)       
+		}
+	}
+    
+    if (group2){
+     	def myLightLevel = state.lightLevel2 as Integer	
+	    def myhueColor = state.hueColor2 as Integer
+    	def mySat = state.saturation2 as Integer
+		def newValue = [hue: myhueColor, saturation: mySat, level: myLightLevel]
+        
+        group2.each {    
+		    it.setColor(newValue)       
+		}
+
+    }
+    
+	if(switch1){
+    	switch1.on()
+    }
+    if(switch2){
+    	switch2.off()
+    }
+    theSwitch.off()
+}
+
+
+def initialize() {
+	subscribe(theSwitch, "switch.On", onHandler)
+    subscribe(motion, "motion.inactive", offHandler)
+
+    colorSelection1()
+    colorSelection2()
+    
+}
+
+def colorSelection2() {
+	state.lightLevel2 = group2Lvl
+	state.hueColor2 = 23
+	state.saturation2 = 56
+
+	switch(group2Color) {
+		case "White":
+			state.hueColor2 = 52
+			state.saturation2 = 19
+			break;
+		case "Daylight":
+			state.hueColor2 = 53
+			state.saturation2 = 91
+			break;
+		case "Soft White":
+			state.hueColor2 = 23
+			state.saturation2 = 56
+			break;
+		case "Warm White":
+			state.hueColor2 = 20
+			state.saturation2 = 80 //83
+			break;
+		case "Blue":
+			state.hueColor2 = 70
+			state.saturation2 = 100            
+			break;
+		case "Green":
+			state.hueColor2 = 39
+            state.saturation2 = 100
+			break;
+		case "Yellow":
+			state.hueColor2 = 25
+            state.saturation2 = 100
+			break;
+		case "Orange":
+			state.hueColor2 = 10
+            state.saturation2 = 100
+			break;
+		case "Purple":
+			state.hueColor2 = 75
+            state.saturation2 = 100
+			break;
+		case "Pink":
+			state.hueColor2 = 83
+            state.saturation2 = 100
+			break;
+		case "Red":
+			state.hueColor2 = 100
+            state.saturation2 = 100
+			break;
+
+	}
+}
+
+def colorSelection1() {
+	state.lightLevel1 = group1Lvl 
+	state.hueColor1 = 23
+	state.saturation1 = 56
+
+	switch(group1Color) {
+		case "White":
+			state.hueColor1 = 52
+			state.saturation1 = 19
+			break;
+		case "Daylight":
+			state.hueColor1 = 53
+			state.saturation1 = 91
+			break;
+		case "Soft White":
+			state.hueColor1 = 23
+			state.saturation1 = 56
+			break;
+		case "Warm White":
+			state.hueColor1 = 20
+			state.saturation1 = 80 //83
+			break;
+		case "Blue":
+			state.hueColor1 = 70
+			state.saturation1 = 100
+            break;
+		case "Green":
+			state.hueColor1 = 39
+			state.saturation1 = 100
+            break;
+		case "Yellow":
+			state.hueColor1 = 25
+			state.saturation1 = 100			
+            break;
+		case "Orange":
+			state.hueColor1 = 10
+			state.saturation1 = 100
+            break;
+		case "Purple":
+			state.hueColor1 = 75
+			state.saturation1 = 100
+            break;
+		case "Pink":
+			state.hueColor1 = 83
+			state.saturation1 = 100
+            break;
+		case "Red":
+			state.hueColor1 = 100
+			state.saturation1 = 100                       
+			break;
+	}
+    
+			state.lastStatus = "on"
+
+}
+
+def offHandler(evt) {
+		log.trace "offHandler($evt.name: $evt.value)"	
+        
+        state.motionStopTime = now()
+        
+		if(delayMinutes) {
+			runIn(delayMinutes*60, turnOffMotionAfterDelay, [overwrite: false])
+		} else {
+			turnOffMotionAfterDelay()
+		}
+}
+
+def turnOffMotionAfterDelay() {
+	log.debug "In turnOffMotionAfterDelay"
+	if (state.motionStopTime && state.lastStatus != "off") {
+		def elapsed = now() - state.motionStopTime
+		if (elapsed >= (delayMinutes ?: 0) * 60000L) {
+			group1.setColor([level: 0])
+			group2.setColor([level: 0])
+			switch1.setColor([level: 0])
+           
+			state.lastStatus = "off"
+		}
+	}
+}
