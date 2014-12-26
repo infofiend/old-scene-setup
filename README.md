@@ -1,13 +1,14 @@
-SCENE CONTROL (Completely Automated Smart Lighting Control)
+Completely Automated Smart Lighting Scenes
 ==============================
 
-  SCENE CONTROL is a Smartthings app that monitors the state of the specific switch to implement a lighting "Scene" - up to 2 different groups of Hue lights &amp; 2 different groups of switches.  Each group of Hue lights can have different light settings (level & color) that is independent from the other.  Each group of switches is similarly independent and can set to on/off 
+  SCENE CONTROL is a Smartthings app that monitors the state of the specific switch to implement a lighting "Scene" - up to 2 different groups of Hue lights &amp; 2 different groups of switches.  Each group of Hue lights can have different light settings (level & color) that is independent from the other.  Each group of switches is similarly independent and can set to on/off.   
+  SCENE CONTROL can also check for "no motion" events and then turn off (reduce the level to 0) the Hue group(s) and/or the switch group(s) based on the amount of time you specify. 
  
-  SCENE CONTROL -- in combination with a dedicated switch (physical or virtual) and the "GLOBAL TRIGGER" app (SEE HERE) -- can be used to set up very flexible -- and completely automated -- smart lighting "scenes" for every room in your house.  The process is: (1) Set up Scene Switch (physical or virtual), (2) Set up GLOBAL TRIGGER app to turn on Scene Switch, and then (3) set up SCENE CONTROL app to implement the actual lighting of the Scene.  
+ GLOBAL TRIGGER is a Smartthings app that you can use to monitor a wide range of events -- e.g., switches, presence, time of day, contact, moisture, buttons, etc. -- and turn your Scene switch on/off.  You can select multiple events to be triggers, and you can limit the trigger to only run in the Mode(s) you select.
+ 
+  When used together, SCENE CONTROL and GLOBAL TRIGGER -- in combination with a dedicated switch (physical or virtual) -- creates completely automated smart lighting "scenes".   The Set-Up process is: (1) Set up Scene Switch (physical or virtual), (2) Set up GLOBAL TRIGGER app to turn on Scene Switch, and then (3) set up SCENE CONTROL app to implement the actual lighting of the Scene.  
   
-  SCENE CONTROL can also check for "no motion" events and then turn off (reduce the level to 0) the Hue group(s) and/or the switch group(s) based on the amount of time you specify.
-  
-
+ 
 ** ** ** ** EXAMPLE ** ** ** **
 
   STEP 1) From within the IDE, create a virtual switch (if you are using physical switch, then just go to next step) using Smartthings' standard "on/off button" device type.  
