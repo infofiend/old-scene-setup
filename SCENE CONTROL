@@ -1,11 +1,11 @@
 definition(
-    name: "Virtual Switch Control HUE Lights and/or Switches",
-	namespace: "Pastorlicious",
+    name: "Scene Control",
+    namespace: "AAptastic",
     author: "Anthony Pastor",
-    description: "Based in VERY large part on Virtual Switch Control Lights by cbd@deyoungproperties.com.  With the press of a single 'virtual switch', this app sets 1 OR 2 groups of your HUE light switches to specific colors / levels, and/or turn sets of switches on or off.",
+    description: "This app sets a lighting scene for 1 OR 2 groups of your HUE light switches to specific colors / levels, and/or turn 1 or 2 sets of switches on / off.",
     category: "My Apps",
-    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Partner/hue.png",
-    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Partner/hue@2x.png"
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png")
 )
 
 preferences {
@@ -42,14 +42,13 @@ preferences {
 
 def installed()
 {
-	subscribe(app, appTouch)
-        initialize()
+
+    initialize()
 }
 
 def updated() {
 
 	unsubscribe()
-	subscribe(app, appTouch)
     initialize()
 
 }
@@ -86,7 +85,6 @@ def appTouch(evt) {
     if(switch2){
     	switch2.off()
     }
-    theSwitch.off()
 
 }
 
@@ -101,6 +99,7 @@ def onHandler(evt) {
    		group1.each {    
 		    it.setColor(newValue)       
 		}
+       
 	}
     
     if (group2){
@@ -112,7 +111,6 @@ def onHandler(evt) {
         group2.each {    
 		    it.setColor(newValue)       
 		}
-
     }
     
 	if(switch1){
@@ -121,11 +119,12 @@ def onHandler(evt) {
     if(switch2){
     	switch2.off()
     }
-    theSwitch.off()
+
 }
 
 
 def initialize() {
+	subscribe(app, appTouch)
 	subscribe(theSwitch, "switch.On", onHandler)
     subscribe(motion, "motion.inactive", offHandler)
 
@@ -265,7 +264,9 @@ def turnOffMotionAfterDelay() {
 			group2.setColor([level: 0])
 			switch1.setColor([level: 0])
            
-			state.lastStatus = "off"
+			theSwitch.off()
+           
+            
 		}
 	}
 }
