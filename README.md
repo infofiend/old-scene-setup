@@ -1,22 +1,23 @@
-switch-control-4-hues-switches
+SCENE CONTROL (Completely Automated Smart Lighting Control)
 ==============================
 
-This is a Smartthings app that 
+  SCENE CONTROL is a Smartthings app that monitors the state of the specific switch to implement a lighting "Scene" - up to 2 different groups of Hue lights &amp; 2 different groups of switches.  Each group of Hue lights can have different light settings (level & color) that is independent from the other.  Each group of switches is similarly independent and can set to on/off 
+ 
+  SCENE CONTROL -- in combination with a dedicated switch (physical or virtual) and the "GLOBAL TRIGGER" app (SEE HERE) -- can be used to set up very flexible -- and completely automated -- smart lighting "scenes" for every room in your house.  The process is: (1) Set up Scene Switch (physical or virtual), (2) Set up GLOBAL TRIGGER app to turn on Scene Switch, and then (3) set up SCENE CONTROL app to implement the actual lighting of the Scene.  
+  
+  SCENE CONTROL can also check for "no motion" events and then turn off (reduce the level to 0) the Hue group(s) and/or the switch group(s) based on the amount of time you specify.
+  
 
-  1) monitors a switch (virtual ok) to trigger on or off 2 groups of hue lights &amp; and 2 groups of switches.
-  2) Each set of hue lights can have different light settings
-  3) App also checks for no motion to turn off lights for desired time
+** ** ** ** EXAMPLE ** ** ** **
+
+  STEP 1) From within the IDE, create a virtual switch (if you are using physical switch, then just go to next step) using Smartthings' standard "on/off button" device type.  
+IMPORTANT -- Each scene will need its own switch.  For example, I created 4 separate virtual switches for the 4 scenes I like in my bedroom:  "Bedroom Morning Switch," "Bedroom Day Switch," "Bedroom Night Switch," and "Bedroom Late Switch."
+
+  STEP 2) From within the Smartthings App, add a "SCENE CONTROL" app and identify the lighting / switches that you want on/off. IMPORTANT - again, you will need to add a separate SCENE CONTROL app for each scene that you have!  For example, I added 4 separate SCENE CONTROL apps for my 4 bedroom scenes:  "Bedroom Morning Scene," "Bedroom Day Scene," "Bedroom Night Scene," and "Bedroom Late Scene.
   
-*****
+  STEP 3) From within the Smartthings App, add a "GLOBAL TRIGGER" app and identify the events that turn your Scene switch on/off.  The TRIGGER app allows you to select multiple triggering events -- e.g., switches, presence, time of day, contact, moisture, buttons, etc.  
+IMPORTANT - again, you will need to add a TRIGGER app for each scene that you have!  For example, I added 4 separate TRIGGER apps for my 4 bedroom scenes:  "Bedroom Morning Trigger," "Bedroom Day Trigger," "Bedroom Night Trigger," and "Bedroom Late Trigger.
+
   
-  I use this app to set lighting "scenes" for any room in my house.  There are 3 steps involved:
-  
-  i) I create a virtual switch (using the standard "on/off button" device type).  
-  ii) I cause that virtual switch to be activated by one or more triggering events -- e.g., mode, another switch, presence, time of day, etc.  
-  iii) I use this app to turn on the selected lights (my "scene") if that virtual switch turns on.      
-  
-  For example, I created a virtual switch called "LR Morning Scene."  I have it triggered at 7 am, by motion in my Living Room motion detector after 6 am), or by the Front Door opening (the Hue Mood Lighting app is great for this type of switch control because it already contains the code for multiple triggering events).  Regardless of the triggering event that causes the "LR Morning Scene" switch to turn on, this app then triggers the LR lighting scene I designed for morngings only.
-  
-  I like this setup because it separates the triggers from the actions, thereby giving my home setup much more flexibility.
-  
-  
+  OPTIONAL) In order to avoid having multiple triggers firing at once (creating chaos), I recommend setting up a different GLOBAL TRIGGER for each mode -- i.e., specify the specific mode(s) in each TRIGGER app so only 1 TRIGGER app controls at any time.  If you do limit it this way, however, and you also want the scene to change immediately when the mode changes, then you will need to turn on the Scene switch with something else.  I use "Hello Home" actions.  For example, I set up a "Late" Hello Home action to run at midnight that (1) changes the mode to "Late" and (2) triggers my "Bedroom Late Switch" (as well as my "LR Late Switch" and my "Outside Late Switch").
+ 
